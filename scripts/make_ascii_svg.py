@@ -19,7 +19,7 @@ FONT_SIZE = 11           # px; controls cell size and overall SVG dimensions
 CONTRAST = 1.0
 GAMMA = 1.8              # >1 compresses midtones toward "sparse" so only true shadows go dense
 WHITE_FLOOR = 30         # minimum text brightness (0-255) so shadows stay legible
-TYPE_SPEED_MS = 4        # per-cell reveal delay step
+TYPE_SPEED_MS = 2        # per-glyph reveal delay step (only rendered glyphs count)
 BG_COLOR = "#0d1117"
 RAMP = " .:-=+*#%@"
 ALPHA_THRESHOLD = 40     # below this alpha, treat the cell as background
@@ -90,11 +90,9 @@ def build_svg() -> str:
         for c in range(COLS):
             x = c * cell_w
             if alpha[r, c] < ALPHA_THRESHOLD:
-                idx += 1
                 continue
             char, gray = map_cell(lum[r, c])
             if char == " ":
-                idx += 1
                 continue
             cls = "" if STATIC else ' class="c"'
             style = "" if STATIC else f' style="--i:{idx}"'
